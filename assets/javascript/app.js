@@ -54,43 +54,41 @@ $(document).ready(function() {
         });
         // This ends the restaurant information
     }
-
-    //click events from main page.
     $("#log-in-btn").click(function () {
         $('#my-modal').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
     });
 
+    $('#login-submit-btn').click(function(){
+        var user = $('#InputUserName').val();
+        var pw = $('#InputPassword').val();
+
+        authenticate(user, pw, function(user){
+                alert(user.first_name);
+            },
+            function(user_name){
+                alert('Access denied for user ' + user_name);
+            }, function(user_name){
+                alert('No account associated with user ' + user_name);
+            });
+    });
+
     $("#sign-up-btn").click(function () {
         $('#my-modal1').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
-    });
+    })
     // API Information
-    // var config = {
-    //     apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
-    //     authDomain: "purchaseperks.firebaseapp.com",
-    //     databaseURL: "https://purchaseperks.firebaseio.com",
-    //     projectId: "purchaseperks",
-    //     storageBucket: "purchaseperks.appspot.com",
-    //     messagingSenderId: "172023201216"
-    // };
-    // firebase.initializeApp(config);
-
-
-    // Initialize Firebase
     var config = {
-        apiKey: "AIzaSyDDa_TpnsyZCVAhb4Ax80lxpbLw7ekoEfw",
-        authDomain: "purchaseperks-ryan.firebaseapp.com",
-        databaseURL: "https://purchaseperks-ryan.firebaseio.com",
-        projectId: "purchaseperks-ryan",
-        storageBucket: "purchaseperks-ryan.appspot.com",
-        messagingSenderId: "814610225207"
+        apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
+        authDomain: "purchaseperks.firebaseapp.com",
+        databaseURL: "https://purchaseperks.firebaseio.com",
+        projectId: "purchaseperks",
+        storageBucket: "purchaseperks.appspot.com",
+        messagingSenderId: "172023201216"
     };
     firebase.initializeApp(config);
-
-
     var database = firebase.database();
     var firstName = "";
     var lastName = "";
@@ -109,6 +107,8 @@ $(document).ready(function() {
         return dateOutput;
     }
 // ------------------------------------------------------------------------------------
+
+    //this function pushes info into customers database from sign up form (add user)
     $("#add-user-btn").on("click", function(event){
         event.preventDefault();
         firstName = $("#first-name").val().trim();
@@ -157,10 +157,8 @@ $(document).ready(function() {
                 + "<strong>Registration Date:</strong> " + registrationDate + "</div>");
         })
     });
-    // <button type="button" id="restaurant-history">Purchase History</button>
-    // <div id="restaurant-insert"></div>
-    // <div id="menu-insert"></div>
-    //Populate the db
+
+    //Populate the db with our user generated api info into customers db
     function populateDb(){
         var hitApi;
         database.ref().once('value').then(function(snapshot){
@@ -198,7 +196,7 @@ $(document).ready(function() {
             }
         });
     }
-    populateDb(); //to blow out db set customers to blank string, and populate db to true
+    populateDb();
 
     //authenticating a user
     function authenticate(userName, password, onSuccess, onDenied, onNotFound){
@@ -244,7 +242,9 @@ $(document).ready(function() {
             });
     });
 
-
+    // <button type="button" id="restaurant-history">Purchase History</button>
+    // <div id="restaurant-insert"></div>
+    // <div id="menu-insert"></div>
 });
 
 
