@@ -9,14 +9,14 @@ $(document).ready(function() {
                     itemFour: "Watermelon Cilantro Fresca"},
                     {restaurantName: "Sweetfin Poke",
                         itemOne: "Spicy Tuna",
-                        item: "Mango Albacore",
-                        item: "Kale Snapper",
-                        item: "Spicy Yuzu Salmon"},
+                        itemTwo: "Mango Albacore",
+                        itemThree: "Kale Snapper",
+                        itemFour: "Spicy Yuzu Salmon"},
                     {restaurantName: "Verve Coffee",
                         itemOne: "Farm Level Reserve",
-                        item: "Santa Clara",
-                        item: "Amada Fernandez",
-                        item: "The 1950"}
+                        itemTwo: "Santa Clara",
+                        itemThree: "Amada Fernandez",
+                        itemFour: "The 1950"}
                 ]
         };
         $("#restaurant-history").click(function () {
@@ -65,15 +65,29 @@ $(document).ready(function() {
         })
     })
     // API Information
+    // var config = {
+    //     apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
+    //     authDomain: "purchaseperks.firebaseapp.com",
+    //     databaseURL: "https://purchaseperks.firebaseio.com",
+    //     projectId: "purchaseperks",
+    //     storageBucket: "purchaseperks.appspot.com",
+    //     messagingSenderId: "172023201216"
+    // };
+    // firebase.initializeApp(config);
+
+
+    // Initialize Firebase
     var config = {
-        apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
-        authDomain: "purchaseperks.firebaseapp.com",
-        databaseURL: "https://purchaseperks.firebaseio.com",
-        projectId: "purchaseperks",
-        storageBucket: "purchaseperks.appspot.com",
-        messagingSenderId: "172023201216"
+        apiKey: "AIzaSyDDa_TpnsyZCVAhb4Ax80lxpbLw7ekoEfw",
+        authDomain: "purchaseperks-ryan.firebaseapp.com",
+        databaseURL: "https://purchaseperks-ryan.firebaseio.com",
+        projectId: "purchaseperks-ryan",
+        storageBucket: "purchaseperks-ryan.appspot.com",
+        messagingSenderId: "814610225207"
     };
     firebase.initializeApp(config);
+
+
     var database = firebase.database();
     var firstName = "";
     var lastName = "";
@@ -102,7 +116,7 @@ $(document).ready(function() {
         dateOfBirth = $("#date-of-birth").val().trim();
         cellPhoneNumber = $("#cell-phone-number").val().trim();
         registrationDate = dateFunction();
-        database.ref().push({
+        database.ref('customers/').push({
             firstName: firstName,
             lastName: lastName,
             email: email,
@@ -143,6 +157,46 @@ $(document).ready(function() {
     // <button type="button" id="restaurant-history">Purchase History</button>
     // <div id="restaurant-insert"></div>
     // <div id="menu-insert"></div>
+    //Populate the db
+    function populateDb(){
+        var hitApi;
+        database.ref().once('value').then(function(snapshot){
+            hitApi = snapshot.val().populate_db;
+            if (hitApi){
+                var amountOfUsers = 2;
+                var urlLink = "https://randomuser.me/api/?results=" + amountOfUsers;
+
+                $.ajax({
+                    url: urlLink,
+                    dataType: 'json',
+                    success: function(data){
+                        var customers = database.ref('customers/')
+
+                        for(var i = 0; i < amountOfUsers; i++){
+                            var customer = {
+                                first_name : data.results[i].name.first,
+                                last_name : data.results[i].name.last,
+                                email: data.results[i].email,
+                                user_name : data.results[i].login.username,
+                                password: data.results[i].login.password,
+                                dob: data.results[i].dob,
+                                cell: data.results[i].cell,
+                                thumbnail: data.results[i].picture.thumbnail,
+                                registered: data.results[i].registered
+                            };
+
+                            customers.push(customer);
+                        }
+
+                        var updates = {'populate_db': false};
+                        database.ref().update(updates);
+                    }
+                });
+            }
+        });
+    }
+    populateDb(); //to blow out db set customers to blank string, and populate db to true
+
 });
 
 
