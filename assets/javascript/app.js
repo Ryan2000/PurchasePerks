@@ -54,16 +54,19 @@ $(document).ready(function() {
         });
         // This ends the restaurant information
     }
+
+    //click events from main page.
     $("#log-in-btn").click(function () {
         $('#my-modal').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
-    })
+    });
+
     $("#sign-up-btn").click(function () {
         $('#my-modal1').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
-    })
+    });
     // API Information
     // var config = {
     //     apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
@@ -196,6 +199,51 @@ $(document).ready(function() {
         });
     }
     populateDb(); //to blow out db set customers to blank string, and populate db to true
+
+    //authenticating a user
+    function authenticate(userName, password, onSuccess, onDenied, onNotFound){
+        database.ref('customers/').once('value').then(function(snapshot){
+            var found = false;
+            snapshot.forEach(function(child){
+                var user_name = child.val().user_name;
+                var pw = child.val().password;
+
+                if(userName === user_name && password === pw){
+                    if(onSuccess){
+                        onSuccess(child.val());
+                    }
+                    found = true;
+                } else if (userName === user_name && password !== pw){
+                    if(onDenied){
+                        onDenied(userName);
+                    }
+                    found = true;
+                }
+                return true;
+            });
+            if (!found){
+                if(onNotFound){
+                    onNotFound(userName);
+                }
+            }
+        });
+    }
+
+    //click listener for authenticating username and password
+    $('#login-submit-btn').click(function(){
+        var user = $('#InputUserName').val();
+        var pw = $('#InputPassword').val();
+
+        authenticate(user, pw, function(user){
+                alert(user.first_name);
+            },
+            function(user_name){
+                alert('Access denied for user ' + user_name);
+            }, function(user_name){
+                alert('No account associated with user ' + user_name);
+            });
+    });
+
 
 });
 
