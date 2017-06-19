@@ -1,3 +1,11 @@
+//issues
+// 1.. possible race error when attempting to confirm login authorization
+//no errors in console.  no alert messages firing.
+//2...  the db variables created under the add-user-btn
+//do not match db variables from our api.
+//you'll see password vs passwordInput etc...  these need to be corrected so all match
+
+
 $(document).ready(function() {
     function restaurantInformation(){
         var restaurants = {
