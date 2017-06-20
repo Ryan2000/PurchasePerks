@@ -198,8 +198,10 @@ $(document).ready(function() {
                                 registered: data.results[i].registered
                             };
 
-                            customers.push(customer);
+                            var newCustomer = customers.push(customer);
+                            addPuchaseHistory(newCustomer.key, "SweetGreen" , '6/19/2017', ['Steak', 'Tunda']);
                         }
+
 
                         var updates = {'populate_db': false};
                         database.ref().update(updates);
@@ -226,6 +228,7 @@ $(document).ready(function() {
                     result = 'denied';
                     found = true;
                 }
+                if(found)
                 return true;
             });
             if (!found) {
@@ -248,6 +251,28 @@ $(document).ready(function() {
             $('#my-modal').modal('hide'); //hide the login form
         });
     });
+
+
+
+    function addPuchaseHistory(customerPk, restaurantName, visitDate, itemArray){
+        var purchase = {
+            resturant: restaurantName,
+            date: visitDate,
+            items: itemArray
+        };
+        addOrder(customerPk, purchase);
+    }
+
+    //Add an order to the customer using the pk
+    function addOrder(customerPk, order){
+        var customer = database.ref('customers/' + customerPk);
+        customer.push(order);
+    }
+
+
+
+
+    //
 
     // <button type="button" id="restaurant-history">Purchase History</button>
     // <div id="restaurant-insert"></div>
