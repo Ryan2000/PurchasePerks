@@ -1,25 +1,24 @@
-//issues
-// 1.. possible race error when attempting to confirm login authorization
-//no errors in console.  no alert messages firing.
-//2...  the db variables created under the add-user-btn
-//do not match db variables from our api.
-//you'll see password vs passwordInput etc...  these need to be corrected so all match
+
 
 
 $(document).ready(function() {
 
     // API Information
+    // Initialize Firebase
     var config = {
-        apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
-        authDomain: "purchaseperks.firebaseapp.com",
-        databaseURL: "https://purchaseperks.firebaseio.com",
-        projectId: "purchaseperks",
-        storageBucket: "purchaseperks.appspot.com",
-        messagingSenderId: "172023201216"
+        apiKey: "AIzaSyDDa_TpnsyZCVAhb4Ax80lxpbLw7ekoEfw",
+        authDomain: "purchaseperks-ryan.firebaseapp.com",
+        databaseURL: "https://purchaseperks-ryan.firebaseio.com",
+        projectId: "purchaseperks-ryan",
+        storageBucket: "purchaseperks-ryan.appspot.com",
+        messagingSenderId: "814610225207"
     };
 
     firebase.initializeApp(config);
-    var database = firebase.database();
+    var database = firebase.database(); //root node
+    var customersRef = database.ref('customers'); //customers variable (node)
+    var populateDbRef = database.ref('populate_db'); //populate_db variable (node)
+
     var firstName = "";
     var lastName = "";
     var email = "";
@@ -57,6 +56,7 @@ $(document).ready(function() {
                         itemFour: "The 1950"}
                 ]
         };
+
         $("#restaurant-history").click(function () {
             var functions = [];
             var div = $("#restaurant-insert");
@@ -211,47 +211,42 @@ $(document).ready(function() {
     populateDb();
 
     //authenticating a user
-    function authenticate(userName, password, onSuccess, onDenied, onNotFound){
-        database.ref('customers/').once('value').then(function(snapshot){
+    function authenticate(userName, password, onComplete) {
+        customersRef.once('value').then(function (snapshot) {
+            var result;
             var found = false;
-            snapshot.forEach(function(child){
-                var user_name = child.val().user_name;
-                var pw = child.val().password;
+            snapshot.forEach(function (ch) {
+                var user_name = ch.val().user_name;
+                var pw = ch.val().password;
 
-                if(userName === user_name && password === pw){
-                    if(onSuccess){
-                        onSuccess(child.val());
-                    }
+                if (userName === user_name && password === pw) {
+                    result = ch.key;
                     found = true;
-                } else if (userName === user_name && password !== pw){
-                    if(onDenied){
-                        onDenied(userName);
-                    }
+                } else if (userName === user_name && password !== pw) {
+                    result = 'denied';
                     found = true;
                 }
                 return true;
             });
-            if (!found){
-                if(onNotFound){
-                    onNotFound(userName);
-                }
+            if (!found) {
+                result = 'not found';
+            }
+            if(onComplete){
+                onComplete(result);
             }
         });
     }
+
 
     //click listener for authenticating username and password
     $('#login-submit-btn').click(function(){
         var user = $('#InputUserName').val();
         var pw = $('#InputPassword').val();
 
-        authenticate(user, pw, function(user){
-                alert(user.first_name);
-            },
-            function(user_name){
-                alert('Access denied for user ' + user_name);
-            }, function(user_name){
-                alert('No account associated with user ' + user_name);
-            });
+        authenticate(user, pw, function(result){
+                alert(result);
+            $('#my-modal').modal('hide'); //hide the login form
+        });
     });
 
     // <button type="button" id="restaurant-history">Purchase History</button>
