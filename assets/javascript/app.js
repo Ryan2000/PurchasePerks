@@ -188,7 +188,7 @@ $(document).ready(function() {
                         var customers = database.ref('customers/')
 
                         for(var i = 0; i < amountOfUsers; i++){
-                            var newCusomter = createCustomer (data.results[i].name.first,
+                            var newCustomer = createCustomer (data.results[i].name.first,
                                 data.results[i].name.last,
                                 data.results[i].email,
                                 data.results[i].login.username,
@@ -281,7 +281,7 @@ $(document).ready(function() {
             registered: _registered
         };
         //add to db
-        var newCustomer = customers.push(customer);
+        var newCustomer = customersRef.push(customer);
 
         //return pk
         return newCustomer.key;
