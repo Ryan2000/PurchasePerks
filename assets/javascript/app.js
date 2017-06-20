@@ -55,7 +55,7 @@ $(document).ready(function() {
                         itemThree: "Amada Fernandez",
                         itemFour: "The 1950"}
                 ]
-        };
+         };
 
         $("#restaurant-history").click(function () {
             var functions = [];
@@ -131,16 +131,18 @@ $(document).ready(function() {
         dateOfBirth = $("#date-of-birth").val().trim();
         cellPhoneNumber = $("#cell-phone-number").val().trim();
         registrationDate = dateFunction();
-        database.ref('customers/').push({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            userName: userName,
-            passwordInput: passwordInput,
-            dateOfBirth: dateOfBirth,
-            cellPhoneNumber: cellPhoneNumber,
-            registrationDate: registrationDate
-        });
+
+        createCustomer (firstName,
+            lastName,
+            email,
+            userName,
+            passwordInput,
+            dateOfBirth,
+            cellPhoneNumber,
+            '',
+            registrationDate);
+
+
         $("#first-name").val("");
         $("#last-name").val("");
         $("#email-input").val("");
@@ -186,22 +188,17 @@ $(document).ready(function() {
                         var customers = database.ref('customers/')
 
                         for(var i = 0; i < amountOfUsers; i++){
-                            var customer = {
-                                first_name : data.results[i].name.first,
-                                last_name : data.results[i].name.last,
-                                email: data.results[i].email,
-                                user_name : data.results[i].login.username,
-                                password: data.results[i].login.password,
-                                dob: data.results[i].dob,
-                                cell: data.results[i].cell,
-                                thumbnail: data.results[i].picture.thumbnail,
-                                registered: data.results[i].registered
-                            };
-
-                            var newCustomer = customers.push(customer);
-                            addPuchaseHistory(newCustomer.key, "SweetGreen" , '6/19/2017', ['Steak', 'Tunda']);
+                            var newCusomter = createCustomer (data.results[i].name.first,
+                                data.results[i].name.last,
+                                data.results[i].email,
+                                data.results[i].login.username,
+                                data.results[i].login.password,
+                                data.results[i].dob,
+                                data.results[i].cell,
+                                data.results[i].picture.thumbnail,
+                                data.results[i].registered);
+                            addPuchaseHistory(newCustomer, 'SweetGreen', '6/19/2017', ['Steak', 'Tunda']);
                         }
-
 
                         var updates = {'populate_db': false};
                         database.ref().update(updates);
@@ -211,6 +208,7 @@ $(document).ready(function() {
         });
     }
     populateDb();
+
 
     //authenticating a user
     function authenticate(userName, password, onComplete) {
@@ -269,6 +267,25 @@ $(document).ready(function() {
         customer.push(order);
     }
 
+
+    function createCustomer (_firstName, _lastName, _email, _userName, _password, _dob, _cell, _thumbnail, _registered){
+        var customer = {
+            first_name : _firstName,
+            last_name : _lastName,
+            email: _email,
+            user_name : _userName,
+            password: _password,
+            dob: _dob,
+            cell: _cell,
+            thumbnail: _thumbnail,
+            registered: _registered
+        };
+        //add to db
+        var newCustomer = customers.push(customer);
+
+        //return pk
+        return newCustomer.key;
+    }
 
 
 
