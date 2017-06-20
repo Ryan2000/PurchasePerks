@@ -7,6 +7,36 @@
 
 
 $(document).ready(function() {
+
+    // API Information
+    var config = {
+        apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
+        authDomain: "purchaseperks.firebaseapp.com",
+        databaseURL: "https://purchaseperks.firebaseio.com",
+        projectId: "purchaseperks",
+        storageBucket: "purchaseperks.appspot.com",
+        messagingSenderId: "172023201216"
+    };
+
+    firebase.initializeApp(config);
+    var database = firebase.database();
+    var firstName = "";
+    var lastName = "";
+    var email = "";
+    var userName = "";
+    var passwordInput = "";
+    var dateOfBirth = "";
+    var cellPhoneNumber = "";
+    var registrationDate = "";
+    function dateFunction(){
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var dateOutput = ((''+month).length<2 ? '0' : '') + month +'/' + ((''+day).length<2 ? '0' : '') + day
+            + '/' + d.getFullYear();
+        return dateOutput;
+    }
+
     function restaurantInformation(){
         var restaurants = {
             restaurantArray:
@@ -86,34 +116,8 @@ $(document).ready(function() {
         $('#my-modal1').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
-    })
-    // API Information
-    var config = {
-        apiKey: "AIzaSyBTbLznAEyQGm8Wgr-xAxPLJ9Fon3KF4_o",
-        authDomain: "purchaseperks.firebaseapp.com",
-        databaseURL: "https://purchaseperks.firebaseio.com",
-        projectId: "purchaseperks",
-        storageBucket: "purchaseperks.appspot.com",
-        messagingSenderId: "172023201216"
-    };
-    firebase.initializeApp(config);
-    var database = firebase.database();
-    var firstName = "";
-    var lastName = "";
-    var email = "";
-    var userName = "";
-    var passwordInput = "";
-    var dateOfBirth = "";
-    var cellPhoneNumber = "";
-    var registrationDate = "";
-    function dateFunction(){
-        var d = new Date();
-        var month = d.getMonth()+1;
-        var day = d.getDate();
-        var dateOutput = ((''+month).length<2 ? '0' : '') + month +'/' + ((''+day).length<2 ? '0' : '') + day
-            + '/' + d.getFullYear();
-        return dateOutput;
-    }
+    });
+
 // ------------------------------------------------------------------------------------
 
     //this function pushes info into customers database from sign up form (add user)
@@ -136,7 +140,7 @@ $(document).ready(function() {
             dateOfBirth: dateOfBirth,
             cellPhoneNumber: cellPhoneNumber,
             registrationDate: registrationDate
-        })
+        });
         $("#first-name").val("");
         $("#last-name").val("");
         $("#email-input").val("");
