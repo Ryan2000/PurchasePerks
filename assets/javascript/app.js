@@ -1,6 +1,3 @@
-
-
-
 $(document).ready(function() {
 
     // API Information
@@ -48,7 +45,7 @@ $(document).ready(function() {
                         itemThree: "Amada Fernandez",
                         itemFour: "The 1950"}
                 ]
-         };
+        };
 
         $("#restaurant-history").click(function () {
             var functions = [];
@@ -75,7 +72,6 @@ $(document).ready(function() {
                     // var btn2 = $(document.createElement("div"));
                     var ctr2 = restaurants.restaurantArray[0].itemOne;
                     var txt2 = $(document.createTextNode(ctr2));
-                    console.log(txt2);
                     // var restaurantButtons2 = btn2.append(txt2).attr("type", "text").attr("onclick", functions2).attr("id", "button" + ctr2);
                     div2.append(txt2);
                     // stopBubble(e);
@@ -96,7 +92,6 @@ $(document).ready(function() {
         var pw = $('#InputPassword').val();
 
         authenticate(user, pw, function(user){
-                alert(user.first_name);
             },
             function(user_name){
                 alert('Access denied for user ' + user_name);
@@ -104,6 +99,17 @@ $(document).ready(function() {
                 alert('No account associated with user ' + user_name);
             });
     });
+
+    //click listener for authenticating username and password
+    // $('#login-submit-btn').click(function(){
+    //     var user = $('#InputUserName').val();
+    //     var pw = $('#InputPassword').val();
+
+    //     authenticate(user, pw, function(result){
+    //             alert(result);
+    //         $('#my-modal').modal('hide'); //hide the login form
+    //     });
+    // });
 
     $("#sign-up-btn").click(function () {
         $('#my-modal1').on('shown.bs.modal', function () {
@@ -134,7 +140,6 @@ $(document).ready(function() {
             cellPhoneNumber,
             '',
             registrationDate);
-
 
         $("#first-name").val("");
         $("#last-name").val("");
@@ -203,47 +208,70 @@ $(document).ready(function() {
     }
     populateDb();
 
-
     //authenticating a user
     function authenticate(userName, password, onComplete) {
-        customersRef.once('value').then(function (snapshot) {
+        customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
             var result;
             var found = false;
+            // debugger
+            console.log(snapshot.forEach);
+            console.log(snapshot.val());
+
             snapshot.forEach(function (ch) {
+
                 var user_name = ch.val().user_name;
                 var pw = ch.val().password;
 
+                console.log(user_name);
+
                 if (userName === user_name && password === pw) {
-                    result = ch.key;
+                    // result = ch.key;
+                    console.log("ch.key: " + ch.key.user_name);
+                    console.log("userName: " + userName);
+                    console.log("user_name: " + user_name);
+                    console.log("password: " + password);
+                    console.log("pw: " + pw);
                     found = true;
+                    window.location.href = "access.html";
                 } else if (userName === user_name && password !== pw) {
-                    result = 'denied';
+                    alert('Incorrect user name and/or password');
+                    // result = 'denied';
+                    console.log("ch.key: " + ch.key.user_name);
+                    console.log("userName: " + userName);
+                    console.log("user_name: " + user_name);
+                    console.log("password: " + password);
+                    console.log("pw: " + pw);
                     found = true;
+                } else if (userName !== user_name && password === pw) {
+                    alert('Incorrect user name and/or password');
+                    // result = 'denied';
+                    console.log("ch.key: " + ch.key.user_name);
+                    console.log("userName: " + userName);
+                    console.log("user_name: " + user_name);
+                    console.log("password: " + password);
+                    console.log("pw: " + pw);
+                    found = true;
+                } else if (userName !== user_name && password !== pw) {
+                    alert('Incorrect user name and/or password');
+                    // result = 'denied';
+                    console.log("ch.key: " + ch.key.user_name);
+                    console.log("userName: " + userName);
+                    console.log("user_name: " + user_name);
+                    console.log("password: " + password);
+                    console.log("pw: " + pw);
+                    // found = true;
                 }
                 if(found)
-                return true;
+                    return true;
             });
             if (!found) {
-                result = 'not found';
+                alert('Incorrect user name and/or password');
             }
             if(onComplete){
                 onComplete(result);
             }
         });
     }
-
-
-    //click listener for authenticating username and password
-    $('#login-submit-btn').click(function(){
-        var user = $('#InputUserName').val();
-        var pw = $('#InputPassword').val();
-
-        authenticate(user, pw, function(result){
-                alert(result);
-            $('#my-modal').modal('hide'); //hide the login form
-        });
-    });
-
 
     //add purchase history with those parameters
     function addPuchaseHistory(customerPk, restaurantName, visitDate, itemArray){
@@ -289,5 +317,3 @@ $(document).ready(function() {
     // <div id="restaurant-insert"></div>
     // <div id="menu-insert"></div>
 });
-
-
