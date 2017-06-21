@@ -19,14 +19,7 @@ $(document).ready(function() {
     var customersRef = database.ref('customers'); //customers variable (node)
     var populateDbRef = database.ref('populate_db'); //populate_db variable (node)
 
-    var firstName = "";
-    var lastName = "";
-    var email = "";
-    var userName = "";
-    var passwordInput = "";
-    var dateOfBirth = "";
-    var cellPhoneNumber = "";
-    var registrationDate = "";
+
     function dateFunction(){
         var d = new Date();
         var month = d.getMonth()+1;
@@ -123,14 +116,14 @@ $(document).ready(function() {
     //this function pushes info into customers database from sign up form (add user)
     $("#add-user-btn").on("click", function(event){
         event.preventDefault();
-        firstName = $("#first-name").val().trim();
-        lastName = $("#last-name").val().trim();
-        email = $("#email-input").val().trim();
-        userName = $("#user-name").val().trim();
-        passwordInput = $("#password-input").val().trim();
-        dateOfBirth = $("#date-of-birth").val().trim();
-        cellPhoneNumber = $("#cell-phone-number").val().trim();
-        registrationDate = dateFunction();
+        var firstName = $("#first-name").val().trim();
+        var lastName = $("#last-name").val().trim();
+        var email = $("#email-input").val().trim();
+        var userName = $("#user-name").val().trim();
+        var passwordInput = $("#password-input").val().trim();
+        var dateOfBirth = $("#date-of-birth").val().trim();
+        var cellPhoneNumber = $("#cell-phone-number").val().trim();
+        var registrationDate = dateFunction();
 
         createCustomer (firstName,
             lastName,
@@ -151,6 +144,7 @@ $(document).ready(function() {
         $("#date-of-birth").val("");
         $("#first-name").val("");
         $("#cell-phone-number").val("");
+
         // use this piece of code when the user clicks the profile/settings page
         $("#pull-user-btn").on("click", function(event){
             $("#pull-firstName-data").append("<div class = 'form-group'>"
@@ -251,7 +245,7 @@ $(document).ready(function() {
     });
 
 
-
+    //add purchase history with those parameters
     function addPuchaseHistory(customerPk, restaurantName, visitDate, itemArray){
         var purchase = {
             resturant: restaurantName,
@@ -267,7 +261,7 @@ $(document).ready(function() {
         customer.push(order);
     }
 
-
+    // function to create a new customer.  now all properties match in db
     function createCustomer (_firstName, _lastName, _email, _userName, _password, _dob, _cell, _thumbnail, _registered){
         var customer = {
             first_name : _firstName,
