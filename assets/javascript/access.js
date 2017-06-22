@@ -21,6 +21,7 @@ $(document).ready(function() {
 
 
     var selected_user = localStorage.access_user;
+    localStorage.setItem('purchCount', 0);
     console.log(selected_user);
 
 
@@ -28,15 +29,52 @@ $(document).ready(function() {
 
 
     function purchaseHistory(customerPk){
-        database.ref('customers/' + customerPk).once('value').then(function(snapshot){
+        database.ref('customers/' + customerPk + '/purchistory').once('value').then(function(snapshot){
             snapshot.forEach(function (ch){
                 var purchase = ch.val();
-                if (purchase) {
-                    console.log(purchase.items);
-                    console.log(purchase.resturant);
-                }
+
+                //counting number of purchases
+                var numPurchases = localStorage.purchaseCount;
+                numPurchases++;
+                localStorage.setItem('purchaseCount', numPurchases);
+
+                //update the purchase history dialogue within this function
+                //here your inside the database
+                //in order to append code to modals
+                console.log(purchase.items);
+                console.log(purchase.resturant);
+                console.log(purchase.date);
+
             });
+            /////// Call reward status function here.
         });
     }
 
+    //reward status function  -
+    function rewardStatus(){
+        var numPurchases = localStorage.purchaseCount;
+        var mileStones;
+        if (numPurchases <= 3){
+            //reference first emoji
+        }
+        else if (numPurchases <= 9 && numPurchases > 3) {
+            //reference second emoji
+        }
+        else if (numPurchases > 9 ) {
+            //reference 3rd emoji
+        }
+    }
+
+
 });
+
+
+// var emojiArray = [":baby(p):", ":girl(p):", ":boy(p):", ":adult(p):"]
+//
+// $(document).ready(function() {
+//     for( i = 0; i < emojiArray.length; i++){
+//         $("#emoji-class").emojidexReplace().append("<div>" + emojiArray[i] + "</div>");
+//     }
+//     $(".emojidex-plain_text").emojidexAutocomplete();
+//     $(".emojidex-content_editable").emojidexAutocomplete();
+// });

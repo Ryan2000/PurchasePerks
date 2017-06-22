@@ -20,19 +20,29 @@ $(document).ready(function() {
     populateDb();
 
     function dateFunction(){
+        //Create a new Date object
         var d = new Date();
+
+        //Get the month (it's zero based so add one)
         var month = d.getMonth()+1;
+
+        //Get today's date
         var day = d.getDate();
+
+        //Build a formatted date string
+        //build a mm/dd/yyyy string
         var dateOutput = ((''+month).length<2 ? '0' : '') + month +'/' + ((''+day).length<2 ? '0' : '') + day
             + '/' + d.getFullYear();
+
+        //return the data string
         return dateOutput;
     }
+
 
 
     // -------------------------- LOG IN PATH ---------------------------------------
 
     //Event listener for on click of log in button homepage.
-
     $("#log-in-btn").click(function () {
         $('#my-modal').on('shown.bs.modal', function () {
             $('#myInput').focus()
@@ -45,8 +55,10 @@ $(document).ready(function() {
         var user = $('#InputUserName').val();
         var pw = $('#InputPassword').val();
 
-        authenticate(user, pw, function(userKey){ //this function assigned to oncomplete variable
-                                                //begins oncomplete
+        authenticate(user, pw, function(userKey){
+            //this function assigned to oncomplete variable
+             //begins oncomplete
+
             if (userKey === 'denied' || userKey === 'not found'){
                 alert("Bad username / password");
             } else {
@@ -68,7 +80,8 @@ $(document).ready(function() {
 
         //purchase is on the second tier and has multiple entries that must be referenced by key
         var purchKeys = Object.keys(customer.purchistory);
-        purchKeys.forEach(function(purchase){
+
+        purchKeys.forEach(function(purchase){  //iterates through each item in purchase history
             console.log('Restaurant:', customer.purchistory[purchase].resturant); //LOL this is spelt wrong
             console.log('Restaurant:', customer.purchistory[purchase].date);
             //items has multiple entries, referenced by an index
@@ -88,8 +101,8 @@ $(document).ready(function() {
 
     //----------------------------------Sign Up Path --------------------------------------------------
 
-    //Event listener for sign-up
 
+    //Event listener for sign-up
     $("#sign-up-btn").click(function () {
         $('#my-modal1').on('shown.bs.modal', function () {
             $('#myInput').focus()
@@ -101,14 +114,16 @@ $(document).ready(function() {
     $("#add-user-btn").on("click", function(event){
         event.preventDefault();
         var firstName = $("#first-name").val().trim();
+        //.val = value of textbox.  .trim removes any whitespace
         var lastName = $("#last-name").val().trim();
         var email = $("#email-input").val().trim();
         var userName = $("#user-name").val().trim();
         var passwordInput = $("#password-input").val().trim();
         var dateOfBirth = $("#date-of-birth").val().trim();
         var cellPhoneNumber = $("#cell-phone-number").val().trim();
-        var registrationDate = dateFunction();
+        var registrationDate = dateFunction();  //calling date function
 
+        //passing variables to create customer function and letting it push to db
         createCustomer (firstName,
             lastName,
             email,
@@ -119,7 +134,9 @@ $(document).ready(function() {
             '',
             registrationDate);
 
+
         $("#first-name").val("");
+        //setting textbox back to empty string
         $("#last-name").val("");
         $("#email-input").val("");
         $("#user-name").val("");
@@ -128,7 +145,10 @@ $(document).ready(function() {
         $("#first-name").val("");
         $("#cell-phone-number").val("");
 
+
+
         // use this piece of code when the user clicks the profile/settings page
+        //Doesn't appear to be used at this point
         $("#pull-user-btn").on("click", function(event){
             $("#pull-firstName-data").append("<div class = 'form-group'>"
                 + "<strong>First Name:</strong> "+ firstName + "</div>");
@@ -153,6 +173,10 @@ $(document).ready(function() {
     function populateDb(){
         var hitApi;
         database.ref().once('value').then(function(snapshot){
+            //once function look up database
+            //call .once(value) - sends you the what the db looks like at that point in time
+            //then function accepts anonymous function that lets you act on the data
+            //snapshot is current state of db - returned by once function
             hitApi = snapshot.val().populate_db;
             if (hitApi){
                 var amountOfUsers = 2;
