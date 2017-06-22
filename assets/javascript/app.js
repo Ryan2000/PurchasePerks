@@ -28,61 +28,6 @@ $(document).ready(function() {
         return dateOutput;
     }
 
-    // function restaurantInformation(){
-    //     var restaurants = {
-    //         restaurantArray:
-    //             [{restaurantName: "SweetGreen",
-    //                 itemOne: "Kale Caesar",
-    //                 itemTwo: "Spicy Sabzi",
-    //                 itemThree: "Rad Thai",
-    //                 itemFour: "Watermelon Cilantro Fresca"},
-    //                 {restaurantName: "Sweetfin Poke",
-    //                     itemOne: "Spicy Tuna",
-    //                     itemTwo: "Mango Albacore",
-    //                     itemThree: "Kale Snapper",
-    //                     itemFour: "Spicy Yuzu Salmon"},
-    //                 {restaurantName: "Verve Coffee",
-    //                     itemOne: "Farm Level Reserve",
-    //                     itemTwo: "Santa Clara",
-    //                     itemThree: "Amada Fernandez",
-    //                     itemFour: "The 1950"}
-    //             ]
-    //     };
-    //
-    //     $("#restaurant-history").click(function () {
-    //         var functions = [];
-    //         var div = $("#restaurant-insert");
-    //         for (var i = 0; i < restaurants.restaurantArray.length; i++) {
-    //             var btn = $(document.createElement("button"));
-    //             var ctr = restaurants.restaurantArray[i].restaurantName;
-    //             var txt = $(document.createTextNode(ctr));
-    //             // This sets the restaurant names to the buttons
-    //             var restaurantButtons = btn.append(txt).attr("type", "button").attr("onclick", functions[i]).attr("id", "button" + ctr[i]);
-    //             div.append(btn);
-    //             ctr++;
-    //             // This tells you what you ordered when you click the specific restaurant
-    //             $("#buttonS").click(function () {
-    //                 function stopBubble() {
-    //                     if (e && e.stopPropagation)
-    //                         e.stopPropagation();
-    //                     else
-    //                         window.event.cancelBubble = true;
-    //                 }
-    //                 var functions2 = [];
-    //                 var div2 = $("#menu-insert");
-    //                 // for (var i = 0; i < restaurants.restaurantArray.length; i++) {
-    //                 // var btn2 = $(document.createElement("div"));
-    //                 var ctr2 = restaurants.restaurantArray[0].itemOne;
-    //                 var txt2 = $(document.createTextNode(ctr2));
-    //                 // var restaurantButtons2 = btn2.append(txt2).attr("type", "text").attr("onclick", functions2).attr("id", "button" + ctr2);
-    //                 div2.append(txt2);
-    //                 // stopBubble(e);
-    //                 // }
-    //             })
-    //         }
-    //     });
-    //     // This ends the restaurant information
-    // }
 
     // -------------------------- LOG IN PATH ---------------------------------------
 
@@ -95,14 +40,13 @@ $(document).ready(function() {
     });
 
 
-
     //Event listener for authenticating username and password
-
     $('#login-submit-btn').click(function(){
         var user = $('#InputUserName').val();
         var pw = $('#InputPassword').val();
 
-        authenticate(user, pw, function(userKey){
+        authenticate(user, pw, function(userKey){ //this function assigned to oncomplete variable
+                                                //begins oncomplete
             if (userKey === 'denied' || userKey === 'not found'){
                 alert("Bad username / password");
             } else {
@@ -114,18 +58,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    //click listener for authenticating username and password
-    // $('#login-submit-btn').click(function(){
-    //     var user = $('#InputUserName').val();
-    //     var pw = $('#InputPassword').val();
-
-    //     authenticate(user, pw, function(result){
-    //             alert(result);
-    //         $('#my-modal').modal('hide'); //hide the login form
-    //     });
-    // });
-
 
 
 
@@ -254,9 +186,6 @@ $(document).ready(function() {
     }
 
 
-
-
-
     //function for authenticating a user
     function authenticate(userName, password, onComplete) {
         customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
@@ -282,9 +211,12 @@ $(document).ready(function() {
                     console.log("password: " + password);
                     console.log("pw: " + pw);
                     found = true;
+
+                    //Store the User's PK in the session
+                    localStorage.setItem('access_user', result);
                     window.location.href = "access.html";
                 } else if (userName === user_name && password !== pw) {
-                    alert('Incorrect user name and/or password');
+                    //alert('Incorrect user name and/or password');
                     result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
@@ -293,7 +225,7 @@ $(document).ready(function() {
                     console.log("pw: " + pw);
                     found = true;
                 } else if (userName !== user_name && password === pw) {
-                    alert('Incorrect user name and/or password');
+                    //alert('Incorrect user name and/or password');
                     result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
@@ -302,7 +234,7 @@ $(document).ready(function() {
                     console.log("pw: " + pw);
                     found = true;
                 } else if (userName !== user_name && password !== pw) {
-                    alert('Incorrect user name and/or password');
+                    //alert('Incorrect user name and/or password');
                     result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
@@ -315,7 +247,8 @@ $(document).ready(function() {
                     return true;
             });
             if (!found) {
-                alert('Incorrect user name and/or password');
+                result = 'not found';
+
             }
             if(onComplete){
                 //calling anonymous function and passing result
@@ -364,9 +297,6 @@ $(document).ready(function() {
         return newCustomer.key;
     }
 
-
-
-    //
 
     // <button type="button" id="restaurant-history">Purchase History</button>
     // <div id="restaurant-insert"></div>
