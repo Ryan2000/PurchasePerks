@@ -263,8 +263,8 @@ $(document).ready(function() {
             var result; //result only defined if we hit one of our 4 conditions
             var found = false;
             // debugger
-            console.log(snapshot.forEach);
-            console.log(snapshot.val());
+            //console.log(snapshot.forEach);
+            //console.log(snapshot.val());
 
             snapshot.forEach(function (ch) {
 
@@ -272,6 +272,7 @@ $(document).ready(function() {
                 var pw = ch.val().password;
 
                 console.log(user_name);
+                console.log(password);
 
                 if (userName === user_name && password === pw) {
                     result = ch.key;
@@ -308,7 +309,7 @@ $(document).ready(function() {
                     console.log("user_name: " + user_name);
                     console.log("password: " + password);
                     console.log("pw: " + pw);
-                    // found = true;
+                    found = true;
                 }
                 if(found)
                     return true;
