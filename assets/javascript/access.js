@@ -55,13 +55,13 @@ $(document).ready(function() {
         var numPurchases = localStorage.purchaseCount;
         var mileStones;
         if (numPurchases <= 3){
-            //reference first emoji
+            //milesStones = (reference first emoji)
         }
         else if (numPurchases <= 9 && numPurchases > 3) {
-            //reference second emoji
+            //milesStones = (reference second emoji)
         }
         else if (numPurchases > 9 ) {
-            //reference 3rd emoji
+            //milesStones = (reference 3rd emoji)
         }
     }
 

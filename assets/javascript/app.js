@@ -136,7 +136,7 @@ $(document).ready(function() {
 
 
         $("#first-name").val("");
-        //setting textbox back to empty string
+        //setting textbox back to empty string .val("")
         $("#last-name").val("");
         $("#email-input").val("");
         $("#user-name").val("");
@@ -178,6 +178,9 @@ $(document).ready(function() {
             //then function accepts anonymous function that lets you act on the data
             //snapshot is current state of db - returned by once function
             hitApi = snapshot.val().populate_db;
+            //populate_db is variable in db that has 1 of 3 values
+            //true, false, undefined.
+            //if undefined or false we don't want to populate the db with existing users
             if (hitApi){
                 var amountOfUsers = 2;
                 var urlLink = "https://randomuser.me/api/?results=" + amountOfUsers;
@@ -190,6 +193,7 @@ $(document).ready(function() {
 
                         for(var i = 0; i < amountOfUsers; i++){
                             var newCustomer = createCustomer (data.results[i].name.first,
+                                //createCustomer function
                                 data.results[i].name.last,
                                 data.results[i].email,
                                 data.results[i].login.username,
@@ -198,10 +202,12 @@ $(document).ready(function() {
                                 data.results[i].cell,
                                 data.results[i].picture.thumbnail,
                                 data.results[i].registered);
-                            addPuchaseHistory(newCustomer, 'SweetGreen', '6/19/2017', ['Steak', 'Tunda']);
+                            addPuchaseHistory(newCustomer, 'SweetGreen', '6/19/2017', ['Steak', 'Tuna']);
+                            //this function pushes purchase history to db
                         }
 
                         var updates = {'populate_db': false};
+                        //sets populate db variable to false
                         database.ref().update(updates);
                     }
                 });
@@ -213,6 +219,7 @@ $(document).ready(function() {
     //function for authenticating a user
     function authenticate(userName, password, onComplete) {
         customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
+
             var result; //result only defined if we hit one of our 4 conditions
             var found = false;
             // debugger
@@ -220,7 +227,7 @@ $(document).ready(function() {
             //console.log(snapshot.val());
 
             snapshot.forEach(function (ch) {
-
+               //ch referencing child element which is users
                 var user_name = ch.val().user_name;
                 var pw = ch.val().password;
 
@@ -302,6 +309,7 @@ $(document).ready(function() {
 
 
     // function to create a new customer.  now all properties match in db
+    //_ style to avoid namespace collision
     function createCustomer (_firstName, _lastName, _email, _userName, _password, _dob, _cell, _thumbnail, _registered){
         var customer = {
             first_name : _firstName,
