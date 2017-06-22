@@ -103,11 +103,15 @@ $(document).ready(function() {
         var pw = $('#InputPassword').val();
 
         authenticate(user, pw, function(userKey){
-            //alert(userKey);
-            $('#my-modal').modal('hide');
-            //Retreive the data for the user that logged in
-            //if data is retrieved successful, call profile build, else call error
-            database.ref('customers').child(userKey).once('value', profilePage);
+            if (userKey === 'denied' || userKey === 'not found'){
+                alert("Bad username / password");
+            } else {
+                //alert(userKey);
+                $('#my-modal').modal('hide');
+                //Retreive the data for the user that logged in
+                //if data is retrieved successful, call profile build, else call error
+                database.ref('customers').child(userKey).once('value', profilePage);
+            }
         });
     });
 
@@ -145,7 +149,6 @@ $(document).ready(function() {
         });
         //Reference secondary html page for profile page
         //Append items to secondary html page
-
 
     }
 
@@ -257,7 +260,7 @@ $(document).ready(function() {
     //function for authenticating a user
     function authenticate(userName, password, onComplete) {
         customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
-            var result;
+            var result; //result only defined if we hit one of our 4 conditions
             var found = false;
             // debugger
             console.log(snapshot.forEach);
@@ -271,7 +274,7 @@ $(document).ready(function() {
                 console.log(user_name);
 
                 if (userName === user_name && password === pw) {
-                    // result = ch.key;
+                    result = ch.key;
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
                     console.log("user_name: " + user_name);
@@ -281,7 +284,7 @@ $(document).ready(function() {
                     window.location.href = "access.html";
                 } else if (userName === user_name && password !== pw) {
                     alert('Incorrect user name and/or password');
-                    // result = 'denied';
+                    result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
                     console.log("user_name: " + user_name);
@@ -290,7 +293,7 @@ $(document).ready(function() {
                     found = true;
                 } else if (userName !== user_name && password === pw) {
                     alert('Incorrect user name and/or password');
-                    // result = 'denied';
+                    result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
                     console.log("user_name: " + user_name);
@@ -299,7 +302,7 @@ $(document).ready(function() {
                     found = true;
                 } else if (userName !== user_name && password !== pw) {
                     alert('Incorrect user name and/or password');
-                    // result = 'denied';
+                    result = 'denied';
                     console.log("ch.key: " + ch.key.user_name);
                     console.log("userName: " + userName);
                     console.log("user_name: " + user_name);
@@ -314,6 +317,9 @@ $(document).ready(function() {
                 alert('Incorrect user name and/or password');
             }
             if(onComplete){
+                //calling anonymous function and passing result
+                //3 possible outcomes
+                //not found, denied, customer's pk
                 onComplete(result);
             }
         });
