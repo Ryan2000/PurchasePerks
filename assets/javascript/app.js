@@ -17,6 +17,8 @@ $(document).ready(function() {
     var populateDbRef = database.ref('populate_db'); //populate_db variable (node)
 
 
+    populateDb();
+
     function dateFunction(){
         var d = new Date();
         var month = d.getMonth()+1;
@@ -26,78 +28,87 @@ $(document).ready(function() {
         return dateOutput;
     }
 
-    function restaurantInformation(){
-        var restaurants = {
-            restaurantArray:
-                [{restaurantName: "SweetGreen",
-                    itemOne: "Kale Caesar",
-                    itemTwo: "Spicy Sabzi",
-                    itemThree: "Rad Thai",
-                    itemFour: "Watermelon Cilantro Fresca"},
-                    {restaurantName: "Sweetfin Poke",
-                        itemOne: "Spicy Tuna",
-                        itemTwo: "Mango Albacore",
-                        itemThree: "Kale Snapper",
-                        itemFour: "Spicy Yuzu Salmon"},
-                    {restaurantName: "Verve Coffee",
-                        itemOne: "Farm Level Reserve",
-                        itemTwo: "Santa Clara",
-                        itemThree: "Amada Fernandez",
-                        itemFour: "The 1950"}
-                ]
-        };
+    // function restaurantInformation(){
+    //     var restaurants = {
+    //         restaurantArray:
+    //             [{restaurantName: "SweetGreen",
+    //                 itemOne: "Kale Caesar",
+    //                 itemTwo: "Spicy Sabzi",
+    //                 itemThree: "Rad Thai",
+    //                 itemFour: "Watermelon Cilantro Fresca"},
+    //                 {restaurantName: "Sweetfin Poke",
+    //                     itemOne: "Spicy Tuna",
+    //                     itemTwo: "Mango Albacore",
+    //                     itemThree: "Kale Snapper",
+    //                     itemFour: "Spicy Yuzu Salmon"},
+    //                 {restaurantName: "Verve Coffee",
+    //                     itemOne: "Farm Level Reserve",
+    //                     itemTwo: "Santa Clara",
+    //                     itemThree: "Amada Fernandez",
+    //                     itemFour: "The 1950"}
+    //             ]
+    //     };
+    //
+    //     $("#restaurant-history").click(function () {
+    //         var functions = [];
+    //         var div = $("#restaurant-insert");
+    //         for (var i = 0; i < restaurants.restaurantArray.length; i++) {
+    //             var btn = $(document.createElement("button"));
+    //             var ctr = restaurants.restaurantArray[i].restaurantName;
+    //             var txt = $(document.createTextNode(ctr));
+    //             // This sets the restaurant names to the buttons
+    //             var restaurantButtons = btn.append(txt).attr("type", "button").attr("onclick", functions[i]).attr("id", "button" + ctr[i]);
+    //             div.append(btn);
+    //             ctr++;
+    //             // This tells you what you ordered when you click the specific restaurant
+    //             $("#buttonS").click(function () {
+    //                 function stopBubble() {
+    //                     if (e && e.stopPropagation)
+    //                         e.stopPropagation();
+    //                     else
+    //                         window.event.cancelBubble = true;
+    //                 }
+    //                 var functions2 = [];
+    //                 var div2 = $("#menu-insert");
+    //                 // for (var i = 0; i < restaurants.restaurantArray.length; i++) {
+    //                 // var btn2 = $(document.createElement("div"));
+    //                 var ctr2 = restaurants.restaurantArray[0].itemOne;
+    //                 var txt2 = $(document.createTextNode(ctr2));
+    //                 // var restaurantButtons2 = btn2.append(txt2).attr("type", "text").attr("onclick", functions2).attr("id", "button" + ctr2);
+    //                 div2.append(txt2);
+    //                 // stopBubble(e);
+    //                 // }
+    //             })
+    //         }
+    //     });
+    //     // This ends the restaurant information
+    // }
 
-        $("#restaurant-history").click(function () {
-            var functions = [];
-            var div = $("#restaurant-insert");
-            for (var i = 0; i < restaurants.restaurantArray.length; i++) {
-                var btn = $(document.createElement("button"));
-                var ctr = restaurants.restaurantArray[i].restaurantName;
-                var txt = $(document.createTextNode(ctr));
-                // This sets the restaurant names to the buttons
-                var restaurantButtons = btn.append(txt).attr("type", "button").attr("onclick", functions[i]).attr("id", "button" + ctr[i]);
-                div.append(btn);
-                ctr++;
-                // This tells you what you ordered when you click the specific restaurant
-                $("#buttonS").click(function () {
-                    function stopBubble() {
-                        if (e && e.stopPropagation)
-                            e.stopPropagation();
-                        else
-                            window.event.cancelBubble = true;
-                    }
-                    var functions2 = [];
-                    var div2 = $("#menu-insert");
-                    // for (var i = 0; i < restaurants.restaurantArray.length; i++) {
-                    // var btn2 = $(document.createElement("div"));
-                    var ctr2 = restaurants.restaurantArray[0].itemOne;
-                    var txt2 = $(document.createTextNode(ctr2));
-                    // var restaurantButtons2 = btn2.append(txt2).attr("type", "text").attr("onclick", functions2).attr("id", "button" + ctr2);
-                    div2.append(txt2);
-                    // stopBubble(e);
-                    // }
-                })
-            }
-        });
-        // This ends the restaurant information
-    }
+    // -------------------------- LOG IN PATH ---------------------------------------
+
+    //Event listener for on click of log in button homepage.
+
     $("#log-in-btn").click(function () {
         $('#my-modal').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
     });
 
+
+
+    //Event listener for authenticating username and password
+
     $('#login-submit-btn').click(function(){
         var user = $('#InputUserName').val();
         var pw = $('#InputPassword').val();
 
-        authenticate(user, pw, function(user){
-            },
-            function(user_name){
-                alert('Access denied for user ' + user_name);
-            }, function(user_name){
-                alert('No account associated with user ' + user_name);
-            });
+        authenticate(user, pw, function(userKey){
+            //alert(userKey);
+            $('#my-modal').modal('hide');
+            //Retreive the data for the user that logged in
+            //if data is retrieved successful, call profile build, else call error
+            database.ref('customers').child(userKey).once('value', profilePage);
+        });
     });
 
     //click listener for authenticating username and password
@@ -111,13 +122,45 @@ $(document).ready(function() {
     //     });
     // });
 
+
+
+
+    function profilePage(data) {
+        //Create customer variable - on first tier
+        var customer = data.val();
+        console.log('First:', customer.first_name);
+
+        //purchase is on the second tier and has multiple entries that must be referenced by key
+        var purchKeys = Object.keys(customer.purchistory);
+        purchKeys.forEach(function(purchase){
+            console.log('Restaurant:', customer.purchistory[purchase].resturant); //LOL this is spelt wrong
+            console.log('Restaurant:', customer.purchistory[purchase].date);
+            //items has multiple entries, referenced by an index
+            alert(customer.purchistory[purchase].items[0]);
+            alert(customer.purchistory[purchase].items[1]);
+            (customer.purchistory[purchase].items).forEach(function(itemPurchased){
+                console.log('item:', itemPurchased);
+            });
+
+        });
+        //Reference secondary html page for profile page
+        //Append items to secondary html page
+
+
+    }
+
+
+
+    //----------------------------------Sign Up Path --------------------------------------------------
+
+    //Event listener for sign-up
+
     $("#sign-up-btn").click(function () {
         $('#my-modal1').on('shown.bs.modal', function () {
             $('#myInput').focus()
         })
     });
 
-// ------------------------------------------------------------------------------------
 
     //this function pushes info into customers database from sign up form (add user)
     $("#add-user-btn").on("click", function(event){
@@ -206,9 +249,12 @@ $(document).ready(function() {
             }
         });
     }
-    populateDb();
 
-    //authenticating a user
+
+
+
+
+    //function for authenticating a user
     function authenticate(userName, password, onComplete) {
         customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
             var result;
@@ -283,11 +329,13 @@ $(document).ready(function() {
         addOrder(customerPk, purchase);
     }
 
+
     //Add an order to the customer using the pk
     function addOrder(customerPk, order){
-        var customer = database.ref('customers/' + customerPk);
+        var customer = database.ref('customers/' + customerPk + '/purchistory');
         customer.push(order);
     }
+
 
     // function to create a new customer.  now all properties match in db
     function createCustomer (_firstName, _lastName, _email, _userName, _password, _dob, _cell, _thumbnail, _registered){
