@@ -41,6 +41,11 @@ $(document).ready(function() {
                 //update the purchase history dialogue within this function
                 //here your inside the database
                 //in order to append code to modals
+                $("#purchasehistory").append('<p>Restaurant: ' + purchase.resturant + '</p>'
+                    + '<p>Purchase Date: ' + purchase.date + '</p>' + '<p>Items Purchased: ' +
+                     purchase.items + '</p>');
+
+                
                 console.log(purchase.items);
                 console.log(purchase.resturant);
                 console.log(purchase.date);
@@ -78,3 +83,5 @@ $(document).ready(function() {
 //     $(".emojidex-plain_text").emojidexAutocomplete();
 //     $(".emojidex-content_editable").emojidexAutocomplete();
 // });
+
+

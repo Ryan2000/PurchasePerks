@@ -57,7 +57,7 @@ $(document).ready(function() {
 
         authenticate(user, pw, function(userKey){
             //this function assigned to oncomplete variable
-             //begins oncomplete
+            //begins oncomplete
 
             if (userKey === 'denied' || userKey === 'not found'){
                 alert("Bad username / password");
@@ -146,27 +146,6 @@ $(document).ready(function() {
         $("#cell-phone-number").val("");
 
 
-
-        // use this piece of code when the user clicks the profile/settings page
-        //Doesn't appear to be used at this point
-        $("#pull-user-btn").on("click", function(event){
-            $("#pull-firstName-data").append("<div class = 'form-group'>"
-                + "<strong>First Name:</strong> "+ firstName + "</div>");
-            $("#pull-lastName-data").append("<div class = 'form-group'>"
-                + "<strong>Last Name:</strong> " + lastName + "</div>");
-            $("#pull-email-data").append("<div class = 'form-group'>"
-                + "<strong>Email:</strong> " + email + "</div>");
-            $("#pull-userName-data").append("<div class = 'form-group'>"
-                + "<strong>User Name:</strong> " + userName + "</div>");
-            $("#pull-passwordInput-data").append("<div class = 'form-group'>"
-                + "<strong>Password:</strong> " + passwordInput + "</div>");
-            $("#pull-dateOfBirth-data").append("<div class = 'form-group'>"
-                + "<strong>Date of Birth:</strong> " + dateOfBirth + "</div>");
-            $("#pull-cellPhoneNumber-data").append("<div class = 'form-group'>"
-                + "<strong>Cell Phone:</strong> " + cellPhoneNumber + "</div>");
-            $("#pull-registrationDate-data").append("<div class = 'form-group'>"
-                + "<strong>Registration Date:</strong> " + registrationDate + "</div>");
-        })
     });
 
     //Populate the db with our user generated api info into customers db
@@ -227,7 +206,7 @@ $(document).ready(function() {
             //console.log(snapshot.val());
 
             snapshot.forEach(function (ch) {
-               //ch referencing child element which is users
+                //ch referencing child element which is users
                 var user_name = ch.val().user_name;
                 var pw = ch.val().password;
 
