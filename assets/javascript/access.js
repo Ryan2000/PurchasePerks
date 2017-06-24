@@ -150,7 +150,7 @@ $(document).ready(function () {
         });
         $('#milestones').emojidexReplace();
         //emojidexReplace function that scans for the text in our array and replaces the text w emoji
-        //and places in milestones div. 
+        //and places in milestones div.
     }
 
 });
