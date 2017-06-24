@@ -2,7 +2,7 @@
  * Created by ryanhoyda on 6/21/17.
  */
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // API Information
     // Initialize Firebase
@@ -30,12 +30,12 @@ $(document).ready(function() {
     profile(selected_user); //passing primary key
 
     //capitalize first letter
-    function capitalizeName(str){
+    function capitalizeName(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    function profile(customerPk){ //accessing primary key per usual
-        database.ref('customers/' + customerPk).once('value').then(function(snapshot){
+    function profile(customerPk) { //accessing primary key per usual
+        database.ref('customers/' + customerPk).once('value').then(function (snapshot) {
 
             //name
             var firstName = snapshot.val().first_name;
@@ -54,8 +54,8 @@ $(document).ready(function() {
     }
 
 
-    function purchaseHistory(customerPk){
-        database.ref('customers/' + customerPk + '/purchistory').once('value').then(function(snapshot){
+    function purchaseHistory(customerPk) {
+        database.ref('customers/' + customerPk + '/purchistory').once('value').then(function (snapshot) {
 
             //Place to save all restaurant names
             localStorage.setItem('restaurant', JSON.stringify([])); //have to call JSON.Stringify bc
@@ -63,7 +63,7 @@ $(document).ready(function() {
             //so must flatten array into a string
 
 
-            snapshot.forEach(function (ch){
+            snapshot.forEach(function (ch) {
                 var purchase = ch.val();
 
 
@@ -75,7 +75,7 @@ $(document).ready(function() {
                 //in order to append code to modals
                 $("#purchasehistory").append('<p>Restaurant: ' + purchase.resturant + '</p>'
                     + '<p>Purchase Date: ' + purchase.date + '</p>' + '<p>Items Purchased: ' +
-                     purchase.items.join(', ') + '</p>');
+                    purchase.items.join(', ') + '</p>');
 
 
                 //Update the restaurant name list
@@ -96,7 +96,6 @@ $(document).ready(function() {
                 console.log(purchase.date);
 
 
-
             });
 
             /////// Call reward status function here.
@@ -106,32 +105,53 @@ $(document).ready(function() {
 
     }
 
-    //reward status function  -
+
+//reward status function  -
     function rewardStatus(){
-        var names = JSON.parse(localStorage.restaurant); //Get all names back from local storage
-        var emojiArray = [":baby(p):", ":girl(p):", ":boy(p):", ":adult(p):"]
+        var resutrantNames = JSON.parse(localStorage.restaurant); //Get all names back from local storage
+        //local storage can't hold arrays so we JSON.parse to turn string to array
+        var emojiArray = [":baby(p):", ":grin(smiley):", ":sunrise_over_mountains:"];
 
         //Now loop through each name
-        names.forEach(function(name){
+        resutrantNames.forEach(function(name){
+            var id = name.split(' ').join('');
+            //removes whitespace characters (mendocino farms)
+
             //Write out a new div to this rewards div
-            $('#rewards').append("<div id=\'" + name + "\'></div>");
+            $('#milestones').append(
+                "<div style='display: inline-flex' id=\'" + id + "\'>" +
+                "<p style='padding: 15px' class='location'></p>" +
+                "<div class='emoji'></div>" +
+                "<p style='padding: 15px' class='remaining'></p>" +
+                "<div class='complete'></div>" +
+                "</div>");
 
             //name is the name of a restaurant
             var numPurchases = localStorage.getItem(name); //Returns the number of purchases for a resturant
+            var text = name + ': number of purchases ' + numPurchases;
+            var remaining = 'Purchases until complimentary meal: ' + (10 - numPurchases);
+
+            $('#' + id).find('.location').text(text); //class location
+            $('#' + id).find('.remaining').text(remaining); //class remaining
+            $('#' + id).find('.complete').append("<div>" + emojiArray[2] + "</div>"); //used append to insert html
+
             if (numPurchases <= 3){
-                $('#' + name).emojidexReplace().append("<div>" + emojiArray[0] + "</div>");
+                $('#' + id ).find('.emoji').append("<div>" + emojiArray[0] + "</div>");
                 console.log(name + ": " + numPurchases);
             }
             else if (numPurchases <= 9 && numPurchases > 3) {
+                $('#' + id).find('.emoji').append("<div>" + emojiArray[1] + "</div>");
                 console.log(name + ": " + numPurchases);
             }
             else if (numPurchases > 9 ) {
+                $('#' + id).find('.emjoi').append("<div>" + emojiArray[2] + "</div>");
                 console.log(name + ": " + numPurchases);
             }
         });
+        $('#milestones').emojidexReplace();
+        //emojidexReplace function that scans for the text in our array and replaces the text w emoji
+        //and places in milestones div. 
     }
-
-
 
 });
 
