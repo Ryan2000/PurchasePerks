@@ -58,7 +58,10 @@ $(document).ready(function() {
         database.ref('customers/' + customerPk + '/purchistory').once('value').then(function(snapshot){
 
             //Place to save all restaurant names
-            localStorage.setItem('restaurants', []);
+            localStorage.setItem('restaurant', JSON.stringify([])); //have to call JSON.Stringify bc
+            // you can't save an array directly into local storage
+            //so must flatten array into a string
+
 
             snapshot.forEach(function (ch){
                 var purchase = ch.val();
@@ -76,13 +79,12 @@ $(document).ready(function() {
 
 
                 //Update the restaurant name list
-                var names = localStorage.restaurant;
+                var names = JSON.parse(localStorage.restaurant);
 
                 names.push(purchase.resturant);
                 //adding purchase.restaurant to names array
 
-                localStorage.setItem('restaurant', names);
-                //names is an array
+                localStorage.setItem('restaurant', JSON.stringify(names));//names is an array
 
                 localStorage.setItem(purchase.resturant, purchase.items.length);
                 //purchase.resturant = key
@@ -105,16 +107,19 @@ $(document).ready(function() {
     }
 
     //reward status function  -
-    function rewardStatus() {
-        var names = localStorage.restaurant; //Get all names back from local storage
-        var mileStones;
+    function rewardStatus(){
+        var names = JSON.parse(localStorage.restaurant); //Get all names back from local storage
+        var emojiArray = [":baby(p):", ":girl(p):", ":boy(p):", ":adult(p):"]
 
+        //Now loop through each name
+        names.forEach(function(name){
+            //Write out a new div to this rewards div
+            $('#rewards').append("<div id=\'" + name + "\'></div>");
 
-        //Loop through each name
-        names.forEach(function(name) {
             //name is the name of a restaurant
             var numPurchases = localStorage.getItem(name); //Returns the number of purchases for a resturant
             if (numPurchases <= 3){
+                $('#' + name).emojidexReplace().append("<div>" + emojiArray[0] + "</div>");
                 console.log(name + ": " + numPurchases);
             }
             else if (numPurchases <= 9 && numPurchases > 3) {
@@ -126,17 +131,14 @@ $(document).ready(function() {
         });
     }
 
+
+
 });
 
 
-// var emojiArray = [":baby(p):", ":girl(p):", ":boy(p):", ":adult(p):"]
-//
-// $(document).ready(function() {
-//     for( i = 0; i < emojiArray.length; i++){
-//         $("#emoji-class").emojidexReplace().append("<div>" + emojiArray[i] + "</div>");
-//     }
-//     $(".emojidex-plain_text").emojidexAutocomplete();
-//     $(".emojidex-content_editable").emojidexAutocomplete();
-// });
+
+
+
+
 
 

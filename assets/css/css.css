@@ -129,6 +129,19 @@ body {
 }
 
 
+#emoji-class{
+    display: inline-block!important;
+    position: relative;
+    width: 1.2em;
+    height: 1.2em;
+    top: -.1em;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+
+
 /* ------------------------------ Media Queries ------------------------------ */
 /* --------------------------- Desktop Media Query --------------------------- */
 @media screen and (max-width: 980px) {
@@ -186,3 +199,5 @@ body {
         min-height: 100%;
     }
 }
+
+
