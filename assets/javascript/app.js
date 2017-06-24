@@ -200,10 +200,14 @@ $(document).ready(function() {
         customersRef.orderByChild('user_name').equalTo(userName).once('value').then(function (snapshot) {
 
             var result; //result only defined if we hit one of our 4 conditions
+            //if result is true (userName === user_name && password === pw) then result is
+            //ch.key which is (ch) child element which is userKey
+
             var found = false;
-            // debugger
+            //debugger
             //console.log(snapshot.forEach);
             //console.log(snapshot.val());
+            //
 
             snapshot.forEach(function (ch) {
                 //ch referencing child element which is users

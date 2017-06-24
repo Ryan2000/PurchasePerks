@@ -20,6 +20,7 @@ $(document).ready(function() {
     var customersRef = database.ref('customers'); //customers variable (node)
 
 
+    //define selected user and set equal to local storage
     var selected_user = localStorage.access_user;
     localStorage.setItem('purchCount', 0);
     console.log(selected_user);
@@ -45,30 +46,47 @@ $(document).ready(function() {
                     + '<p>Purchase Date: ' + purchase.date + '</p>' + '<p>Items Purchased: ' +
                      purchase.items + '</p>');
 
-                
+
+
+
                 console.log(purchase.items);
                 console.log(purchase.resturant);
                 console.log(purchase.date);
 
+
+
+                /////// Call reward status function here.
+
+                //reward status function  -
+                function rewardStatus(){
+                    numPurchases = localStorage.purchaseCount;
+                    var mileStones;
+                    if (numPurchases <= 3){
+                        console.log("seriously");
+                    }
+                    else if (numPurchases <= 9 && numPurchases > 3) {
+                        console.log("seriously");
+                    }
+                    else if (numPurchases > 9 ) {
+                        console.log("seriously");
+                    }
+                }
+
+
+
+
             });
-            /////// Call reward status function here.
+
+
+
+
         });
+
+
     }
 
-    //reward status function  -
-    function rewardStatus(){
-        var numPurchases = localStorage.purchaseCount;
-        var mileStones;
-        if (numPurchases <= 3){
-            //milesStones = (reference first emoji)
-        }
-        else if (numPurchases <= 9 && numPurchases > 3) {
-            //milesStones = (reference second emoji)
-        }
-        else if (numPurchases > 9 ) {
-            //milesStones = (reference 3rd emoji)
-        }
-    }
+
+
 
 
 });
