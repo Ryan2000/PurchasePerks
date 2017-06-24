@@ -141,6 +141,15 @@ body {
 }
 
 
+#footer-bar {
+    background-color: #1497A3;
+    color: white;
+    height: 100%;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    opacity: .80;
+}
+
 
 /* ------------------------------ Media Queries ------------------------------ */
 /* --------------------------- Desktop Media Query --------------------------- */
