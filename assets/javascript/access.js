@@ -37,9 +37,12 @@ $(document).ready(function () {
     function profile(customerPk) { //accessing primary key per usual
         database.ref('customers/' + customerPk).once('value').then(function (snapshot) {
 
-            //name
+            //firstname, lastName, cell, email, dob
             var firstName = snapshot.val().first_name;
             var lastName = snapshot.val().last_name;
+            var cell = snapshot.val().cell;
+            var email = snapshot.val().email;
+            var dob = snapshot.val().dob;
 
             //image
             var image = snapshot.val().thumbnail;
@@ -50,6 +53,22 @@ $(document).ready(function () {
 
             //append profile image to profile
             $('#profile_image').attr("src", image);
+
+            $('#first-name').val(firstName);
+
+            $('#last-name').val(lastName);
+
+            $('#cell-phone-number').val(cell);
+
+            $('#first-name').val(firstName);
+
+            var dateControl = document.getElementById('date-of-birth');
+            //remove time stamp attached to dob - refer to firebase if needed
+            dateControl.value = dob.split(' ')[0];
+
+
+            $('#email-input').val(email);
+
         });
     }
 

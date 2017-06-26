@@ -13,7 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script src = "https://cdn.emojidex.com/scripts/javascript/emojidex.min.js"></script>
+    <script src="https://cdn.emojidex.com/scripts/javascript/emojidex.min.js"></script>
 
     <!---- Javascript ref file ---->
     <script src=assets/javascript/access.js></script>
@@ -30,19 +30,20 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div id="jumboaccess" class="jumbotron text-center">
-                <img id = "image" src="assets/images/PURCHASEPERKS_C1.png" alt="Image">
+                <img id="image" src="assets/images/PURCHASEPERKS_C1.png" alt="Image">
                 <p>The Authority on Rewards Tracking</p>
                 <!-- Split button -->
                 <div class="btn-group">
-                    <button id = "menu-btn" type="button" class="btn btn-default">Menu</button>
-                    <button id = "menu-btn-dropdown" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    <button id="menu-btn" type="button" class="btn btn-default">Menu</button>
+                    <button id="menu-btn-dropdown" type="button" class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu">
                         <li id="rewards" data-target="#my-rewards"
-                            data-toggle="modal"><a id = "rewards-click" href="#">Rewards</a></li>
+                            data-toggle="modal"><a id="rewards-click" href="#">Rewards</a></li>
                         <li id="purchase-history" data-target="#mypurchase-history"
                             data-toggle="modal"><a href="#">Purchase History</a></li>
                         <li id="profile" data-target="#my-profile"
@@ -60,14 +61,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Rewards</h4>
                 </div>
                 <div class="modal-body">
                     <div id="milestones"></div>
                 </div>
                 <div class="modal-footer">
-                    <button id = "close-class-rewards" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="close-class-rewards" type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -77,7 +80,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel1">Purchase History</h4>
                 </div>
                 <div class="modal-body">
@@ -85,55 +89,127 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button id = "close-class-purchase-history" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="close-class-purchase-history" type="button" class="btn btn-default"
+                            data-dismiss="modal">Close
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="my-profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel2"> My Profile</h4>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <h1 id="profile_greeting"></h1>
-                    </div>
-                    <div>
-                        <img src="" id="profile_image" />
+                    <div class="panel panel-primary">
+                        <div id="add-a-train" class="panel-heading text-center">
+                            <h3 class="panel-title"><strong>Sign Up Information</strong></h3> <!-- adjust this shit -->
+                        </div>
+                        <div class="panel-body">
+                            <form>
+                                <div class="form-group">
+                                    <h1 id="profile_greeting"></h1>
+                                </div>
+                                <div class="form-group">
+                                    <img src="" id="profile_image"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="first-name"><input class="form-control" id="first-name" type="text"
+                                                                   placeholder="First Name" readonly></label>
+
+                                    <button type="button" class="btn btn-default" aria-label="Left Align" id="firstNameEdit">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="last-name"><input class="form-control" id="last-name" type="text"
+                                                                  placeholder="Last Name" readonly></label>
+
+                                    <button type="button" class="btn btn-default" aria-label="Left Align" id="lastNameEdit">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email-input"><input class="form-control" id="email-input" type="email"
+                                                                    placeholder="Email" readonly></label>
+
+                                    <button type="button" class="btn btn-default" aria-label="Left Align" id="emailEdit">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date-of-birth">Date of Birth<input class="form-control"
+                                                                                   id="date-of-birth"
+                                                                                   type="date" readonly></label>
+
+                                    <button type="button" class="btn btn-default" aria-label="Left Align" id="dobEdit">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </button>
+                                    <!--       https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date -->
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cell-phone-number">Cell Phone<input class="form-control"
+                                                                                    id="cell-phone-number" type="tel"
+                                                                                    placeholder="888-888-8888"
+                                                                                    maxlength="12" required="required" readonly></label>
+
+                                    <button type="button" class="btn btn-default" aria-label="Left Align" id="cellphoneEdit">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </button>
+                                    <!-- pattern = "[0-9]{3} [0-9]{3} [0-9]{4}" -->
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id = "close-class-profile" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="close-class-profile" type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
+                    <button id="add-user-btn" type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="about-me" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel3">About PurchasePerks</h4>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <h2>Team Savages</h2>
+                    <h2>Team Savages</h2>
                     </p>
 
                     <p> There are many variations of passages of Lorem Ipsum available,
-                        but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
-                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
-                        All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.
-                        It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.
-                        The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc. </p>
+                        but the majority have suffered alteration in some form, by injected humour, or randomised words
+                        which don't look even slightly believable.
+                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything
+                        embarrassing hidden in the middle of text.
+                        All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,
+                        making this the first true generator on the Internet.
+                        It uses a dictionary of over 200 Latin words, combined with a handful of model sentence
+                        structures, to generate Lorem Ipsum which looks reasonable.
+                        The generated Lorem Ipsum is therefore always free from repetition, injected humour, or
+                        non-characteristic words etc. </p>
                 </div>
                 <div class="modal-footer">
-                    <button id = "close-class-about" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="close-class-about" type="button" class="btn btn-default" data-dismiss="modal">Close
+                    </button>
                 </div>
             </div>
         </div>
