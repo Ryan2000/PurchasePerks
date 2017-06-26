@@ -54,22 +54,56 @@ $(document).ready(function () {
             //append profile image to profile
             $('#profile_image').attr("src", image);
 
+            //append firstname to profile
             $('#first-name').val(firstName);
 
+            //append lastname to profile
             $('#last-name').val(lastName);
 
+            //append cell to profile
             $('#cell-phone-number').val(cell);
 
-            $('#first-name').val(firstName);
-
+            //append dob to profile
             var dateControl = document.getElementById('date-of-birth');
             //remove time stamp attached to dob - refer to firebase if needed
             dateControl.value = dob.split(' ')[0];
 
-
+            //append email to profile
             $('#email-input').val(email);
 
+            //----------------------- manipulate info in text boxes on profile page--------------
+
+            $('#firstNameEdit').click(function(){
+                toggleReadWrite('#first-name', false);
+            });
+
+
+            $('#lastNameEdit').click(function(){
+                toggleReadWrite('#last-name', false);
+            });
+
+
+            $('#emailEdit').click(function(){
+                toggleReadWrite('#email-input', false);
+            });
+
+
+            $('#dobEdit').click(function(){
+                toggleReadWrite('#date-of-birth', false);
+            });
+
+
+            $('#cellphoneEdit').click(function(){
+                toggleReadWrite('#cell-phone-number', false);
+            });
+
+
         });
+    }
+
+    //function to allow user to edit profile data in profile view
+    function toggleReadWrite(selector, state){
+        $(selector).attr('readonly', state);
     }
 
 
