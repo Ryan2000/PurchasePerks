@@ -34,6 +34,41 @@ $(document).ready(function () {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+
+    $('#changeProfilePic').change(function(){
+        var x = document.getElementById('changeProfilePic');
+        if ('files' in x){
+            //if x has a files array
+            if (x.files.length == 0){
+                //if nothing in array - no file
+                console.log('No file');
+            } else {
+                console.log(x.files[0].name);
+                //print name of file
+                var file = x.files[0];
+
+                var metadata = {
+                    contentType: 'image/*'
+                };
+
+                var uploadTask = firebase.storage().ref(selected_user + '/images/' + file.name).put(file, metadata);
+
+                uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+                    function(snapshot){
+                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Progress => ' + progress);
+                    }, function(error){
+                        console.log('Error => ' + error.code);
+                    }, function(){
+                        var downloadURL = uploadTask.snapshot.downloadURL;
+                        console.log(downloadURL);
+                    });
+
+            }
+        }
+    });
+
+
     function profile(customerPk) { //accessing primary key per usual
         database.ref('customers/' + customerPk).once('value').then(function (snapshot) {
 
@@ -71,6 +106,7 @@ $(document).ready(function () {
             //append email to profile
             $('#email-input').val(email);
 
+
             //----------------------- manipulate info in text boxes on profile page--------------
 
             $('#firstNameEdit').click(function(){
@@ -97,8 +133,24 @@ $(document).ready(function () {
                 toggleReadWrite('#cell-phone-number', false);
             });
 
-
         });
+
+        $('#update-profile-btn').click(function(){
+            var updates = {
+                //Field in DB : Input field on page by id
+                'first_name': $('#first-name').val(),
+                'last_name': $('#last-name').val(),
+                'email': $('#email-input').val(),
+                'cell': $('#date-of-birth').val(),
+                'dob': $('#cell-phone-number').val()
+            };
+            updateCustomerProfile(customerPk, updates);
+        });
+    }
+
+    //updates profile info as attached to that consumer's primary key
+    function updateCustomerProfile(customerPk, updates){
+        database.ref('customers/' + customerPk).update(updates);
     }
 
     //function to allow user to edit profile data in profile view
