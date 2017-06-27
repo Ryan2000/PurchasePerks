@@ -54,15 +54,30 @@ $(document).ready(function () {
                 var uploadTask = firebase.storage().ref(selected_user + '/images/' + file.name).put(file, metadata);
 
                 uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-                    function(snapshot){
+                    function (snapshot) {
                         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         console.log('Progress => ' + progress);
-                    }, function(error){
+                    }, function (error) {
                         console.log('Error => ' + error.code);
-                    }, function(){
+                    }, function () {
                         var downloadURL = uploadTask.snapshot.downloadURL;
                         console.log(downloadURL);
+
+                        //created updates object with property thumbnail
+                        //assiging downloadURL to it
+                        var updates = {
+                            "thumbnail": downloadURL
+                        };
+
+                        //calling our function and passing our updates object through
+                        //selected user is of course our primary key
+                        updateCustomerProfile(selected_user, updates);
+
+
+                        //append profile image to profile
+                        $('#profile_image').attr("src", downloadURL);
                     });
+
 
             }
         }
